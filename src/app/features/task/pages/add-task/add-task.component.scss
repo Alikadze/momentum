@@ -1,0 +1,19 @@
+label {
+    color: #343A40;
+    font-weight: 400;
+    font-size: 14px;
+    font-family: FiraGO;
+}
+
+:host ::ng-deep p-datePicker input {
+    background-color: white !important;
+    color: #343A40 !important;
+    border: 1px solid #ced4da !important;
+    border-right: none !important;
+}
+
+:host ::ng-deep p-datePicker span > button {
+    background-color: white !important;
+    border: 1px solid #ced4da !important;
+    border-left: none !important;
+}

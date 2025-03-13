@@ -1,0 +1,93 @@
+<div class="flex flex-col gap-10 pb-10">
+    <div class="font-[FiraGO] font-semibold text-[#212529] text-2xl flex justify-between">
+        შექმენი ახალი დავალება
+    </div>
+    <div class="px-24 pb-32 pt-16 h-full w-full bg-[#FBF9FFA6] border-[0.5px] border-[#DDD2FF] rounded-lg">
+        <form>
+            <div class="flex justify-around">
+                <div class="flex flex-col gap-1">
+                    <label for="header">
+                        სათაური*
+                    </label>
+                    <input
+                        id="header"
+                        pInputText
+                        class="!bg-white !text-black !w-[550px] !border-[#DEE2E6]"
+                    >
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label>
+                        დეპარტამენტი*
+                    </label>
+                    <p-select
+                        styleClass="!w-[550px] !bg-white !text-black !border-[#DEE2E6]"
+                    />
+                </div>
+            </div>
+
+            <div class="flex justify-around pt-14">
+                <div class="flex flex-col gap-1">
+                    <label for="header">
+                        აღწერა
+                    </label>
+                    <textarea
+                        pTextarea
+                        class="!bg-white !text-black !w-[550px] !h-[200px] !border-[#DEE2E6]  resize-none"
+                    ></textarea>
+                </div>
+
+                <div class="flex flex-col gap-1">
+                    <label>
+                        პასუხისმგებელი თანამშრომელი
+                    </label>
+                    <p-select
+                        styleClass="!w-[550px] !bg-white !text-black !border-[#DEE2E6]"
+                    />
+                </div>
+            </div>
+
+            <div class="flex justify-around pt-14">
+                <div class="flex gap-5 w-[550px]">
+                    <div class="flex flex-col gap-1">
+                        <label>
+                            პრიორიტეტი*
+                        </label>
+                        <p-select
+                            styleClass="!w-[270px] !bg-white !text-black !border-[#DEE2E6]"
+                        />
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                        <label>
+                            სტატუსი*
+                        </label>
+                        <p-select
+                            styleClass="!w-[270px] !bg-white !text-black !border-[#DEE2E6]"
+                        />
+                    </div>
+                </div>
+
+                <div class="flex justify-start w-[550px]">
+                    <div class="flex flex-col gap-1 self-start">
+                        <label>
+                            დედლაინი
+                        </label>
+                        <p-datePicker
+                            placeholder="DD/MM/YYYY"
+                            [showIcon]="true"
+                            dateFormat="dd/mm/yy"
+                            styleClass="!w-[260px] !bg-white !text-black !border-[#DEE2E6]"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-36">
+                <p-button
+                    label="დავალების შექმნა"
+                    styleClass="!bg-[#8338EC] !w-[168px] !h-[40px] !border-0 !text-white font-semibold font-FiraGO hover:!bg-[#6D2EC5FF] active:!bg-[#591EABFF]"
+                />
+            </div>
+        </form>
+    </div>
+</div>
