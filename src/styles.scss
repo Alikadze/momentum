@@ -25,3 +25,11 @@ body {
     font-weight: 400;
     src: url(https://cdn.jsdelivr.net/fontsource/fonts/firago@latest/latin-400-normal.woff2) format('woff2'), url(https://cdn.jsdelivr.net/fontsource/fonts/firago@latest/latin-400-normal.woff) format('woff');
 }
+
+.p-toast {
+    font-family: 'FiraGO';
+}
+
+.p-toast-detail {
+    color: #343A40 !important;
+}

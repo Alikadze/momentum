@@ -3,7 +3,7 @@
         შექმენი ახალი დავალება
     </div>
     <div class="px-24 pb-32 pt-16 h-full w-full bg-[#FBF9FFA6] border-[0.5px] border-[#DDD2FF] rounded-lg">
-        <form>
+        <form [formGroup]="addTaskForm">
             <div class="flex justify-around">
                 <div class="flex flex-col gap-1">
                     <label for="header">
@@ -12,15 +12,37 @@
                     <input
                         id="header"
                         pInputText
+                        formControlName="name"
                         class="!bg-white !text-black !w-[550px] !border-[#DEE2E6]"
                     >
+
+                    <div class="font-[firaGO] text-[#6C757D] text-sm">
+                        <div [class.text-green-500]="
+                            !addTaskForm.get('name')?.errors?.['minlength'] &&
+                            !addTaskForm.get('name')?.errors?.['required'] &&
+                            addTaskForm.get('name')?.dirty
+                        ">
+                            მინიმუმ 3 სიმბოლო
+                        </div>
+                        <div [class.text-green-500]="
+                            !addTaskForm.get('name')?.errors?.['maxlength'] &&
+                            !addTaskForm.get('name')?.errors?.['required'] &&
+                            addTaskForm.get('name')?.dirty
+                        ">
+                            მაქსიმუმ 255 სიმბოლო
+                        </div>
+                    </div>
                 </div>
                 <div class="flex flex-col gap-1">
                     <label>
                         დეპარტამენტი*
                     </label>
                     <p-select
+                        [options]="departments.value()"
+                        optionLabel="name"
+                        optionValue="id"
                         styleClass="!w-[550px] !bg-white !text-black !border-[#DEE2E6]"
+                        (onChange)="onDepartmentChange($event)"
                     />
                 </div>
             </div>
@@ -32,17 +54,77 @@
                     </label>
                     <textarea
                         pTextarea
+                        formControlName="description"
                         class="!bg-white !text-black !w-[550px] !h-[200px] !border-[#DEE2E6]  resize-none"
                     ></textarea>
+
+                    @if (addTaskForm.get('description')?.dirty) {
+                        <div class="font-[firaGO] text-[#6C757D] text-sm">
+                            <div [class.text-green-500]="
+                               !addTaskForm.get('description')?.errors?.['minWord'] &&
+                                addTaskForm.get('description')?.dirty
+                        ">
+                                მინიმუმ 4 სიტყვა
+                            </div>
+                            <div [class.text-green-500]="
+                                !addTaskForm.get('description')?.errors?.['maxlength'] &&
+                                addTaskForm.get('description')?.dirty &&
+                                addTaskForm.get('description')?.value
+                            ">
+                                მაქსიმუმ 255 სიმბოლო
+                            </div>
+                        </div>
+                    }
                 </div>
 
-                <div class="flex flex-col gap-1">
+                <div class="relative flex flex-col gap-1 w-[550px]">
                     <label>
                         პასუხისმგებელი თანამშრომელი
                     </label>
                     <p-select
-                        styleClass="!w-[550px] !bg-white !text-black !border-[#DEE2E6]"
-                    />
+                        [options]="departmentEmployees()"
+                        formControlName="employee_id"
+                        optionLabel="name"
+                        optionValue="id"
+                        emptyMessage="თანამშრომელი არ მოიძებნა"
+                        styleClass="!w-[550px] !bg-white !text-black !border-[#DEE2E6] employee-select"
+                    >
+                        <ng-template #selectedItem let-selectedOption>
+                            <div class="flex items-center gap-2 !bg-transparent">
+                                <img class="size-10 rounded-full bg-transparent" [src]="selectedOption.avatar">
+                                <span class="bg-transparent">{{ selectedOption.name }}</span>
+                            </div>
+                        </ng-template>
+
+                        <ng-template #header class="!bg-transparent">
+                            <div class="flex justify-start p-2">
+                                <button
+                                    class="flex items-center gap-2 px-4 py-2 bg-transparent text-[#8338EC] rounded-md"
+                                >
+                                    <i class="pi pi-plus border-2 border-[#8338EC] rounded-full p-1"></i>
+                                    <span class="!text-[#8338EC]"> <div class="!text-[#8338EC]">დაამატე თანამშრომელი</div> </span>
+                                </button>
+                            </div>
+                        </ng-template>
+
+                        <ng-template let-option pTemplate="item" class="bg-inherit">
+                            <div class="flex items-center gap-2 !bg-transparent">
+                                <img class="size-10 rounded-full bg-transparent" [src]="option.avatar">
+                                <span class="bg-transparent">{{ option.name }}</span>
+                            </div>
+                        </ng-template>
+
+                        <ng-template #emptyMessage>
+                            <div class="flex justify-center items-center p-4">
+                                <span class="text-[#8338EC]">თანამშრომელი არ მოიძებნა</span>
+                            </div>
+                        </ng-template>
+                    </p-select>
+
+                    @if (!isDepartmentSelected()) {
+                        <div class="absolute left-0 right-0 top-0 h-1/3 opacity-50 bg-white cursor-not-allowed">
+                        </div>
+                    }
                 </div>
             </div>
 
@@ -53,8 +135,26 @@
                             პრიორიტეტი*
                         </label>
                         <p-select
+                            [options]="priorities.value()"
+                            optionLabel="name"
+                            optionValue="id"
+                            formControlName="priority_id"
                             styleClass="!w-[270px] !bg-white !text-black !border-[#DEE2E6]"
-                        />
+                        >
+                            <ng-template #selectedItem let-selectedOption>
+                                <div class="flex items-center gap-2">
+                                    <img [src]="selectedOption.icon" >
+                                    <span>{{ selectedOption.name }}</span>
+                                </div>
+                            </ng-template>
+
+                            <ng-template let-option pTemplate="item" class="bg-inherit">
+                                <div class="flex items-center gap-2">
+                                    <img [src]="option.icon" >
+                                    <span>{{ option.name }}</span>
+                                </div>
+                            </ng-template>
+                        </p-select>
                     </div>
 
                     <div class="flex flex-col gap-1">
@@ -62,6 +162,10 @@
                             სტატუსი*
                         </label>
                         <p-select
+                            formControlName="status_id"
+                            [options]="statuses.value()"
+                            optionLabel="name"
+                            optionValue="id"
                             styleClass="!w-[270px] !bg-white !text-black !border-[#DEE2E6]"
                         />
                     </div>
@@ -76,6 +180,8 @@
                             placeholder="DD/MM/YYYY"
                             [showIcon]="true"
                             dateFormat="dd/mm/yy"
+                            [minDate]="today()"
+                            formControlName="due_date"
                             styleClass="!w-[260px] !bg-white !text-black !border-[#DEE2E6]"
                         />
                     </div>
@@ -85,6 +191,7 @@
             <div class="flex justify-end pt-36">
                 <p-button
                     label="დავალების შექმნა"
+                    (onClick)="addTask()"
                     styleClass="!bg-[#8338EC] !w-[168px] !h-[40px] !border-0 !text-white font-semibold font-FiraGO hover:!bg-[#6D2EC5FF] active:!bg-[#591EABFF]"
                 />
             </div>

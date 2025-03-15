@@ -17,3 +17,46 @@ label {
     border: 1px solid #ced4da !important;
     border-left: none !important;
 }
+
+:host ::ng-deep p-select span {
+    color: black !important;
+    font-family: FiraGO;
+}
+
+:host ::ng-deep p-select p-overlay div {
+    border-radius: 8px !important;
+    border: none !important;
+}
+
+:host ::ng-deep .employee-select p-overlay div div div {
+    background-color: white;
+    border: none !important;
+}
+
+:host ::ng-deep .p-select-empty-message {
+    color: black !important;
+    font-family: FiraGO;
+    margin-left: auto;
+    margin-right: auto;
+}
+:host ::ng-deep .p-select-empty-message:hover {
+    background-color: unset !important;
+}
+
+:host ::ng-deep .employee-select p-overlay div div div div {
+    background-color: white;
+    border: none !important;
+}
+
+:host ::ng-deep .p-select-option:not(.p-select-option-selected):not(.p-disabled).p-focus {
+    background-color: lightgray !important;
+}
+
+:host ::ng-deep p-select p-overlay div ul {
+    background-color: white !important;
+    border: none !important;
+}
+
+:host ::ng-deep p-select p-overlay div ul li:hover {
+    background-color: #bfc0c4 !important;
+}

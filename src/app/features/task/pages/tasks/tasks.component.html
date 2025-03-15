@@ -1,37 +1,39 @@
-<div class="flex flex-col gap-10">
-    <div>
+<div class="flex flex-col gap-14">
+    <div class="font-[firaGO] font-bold text-2xl text-[#212529]">
         დავალებების გვერდი
     </div>
-    <div class="">
+
+
+    <div>
         <div class="flex gap-10  border border-[#DEE2E6] w-fit rounded-xl">
-            <p-dropdown
+            <p-select
                 styleClass="!bg-transparent !border-0 !shadow-none hover:!text-blue-500"
                 placeholder="დეპარტამენტი"
             />
 
-            <p-dropdown
+            <p-select
                 styleClass="!bg-transparent !border-0 !shadow-none"
                 placeholder="პრიორიტეტი"
             />
 
-            <p-dropdown
+            <p-select
                 styleClass="!bg-transparent !border-0 !shadow-none"
                 placeholder="თანამშრომელი"
             />
         </div>
     </div>
-    <div class="grid grid-cols-4 gap-4">
+    <div class="grid grid-cols-4 gap-4 font-[firaGO] font-medium text-white text-xl">
         <div>
-            <div class="bg-[#F7BC30] w-full h-14 rounded-xl"></div>
+            <div class="flex justify-center items-center bg-[#F7BC30] w-full h-14 rounded-xl">დასაწყები</div>
         </div>
         <div>
-            <div class="bg-[#FB5607] w-full h-14 rounded-xl"></div>
+            <div class="flex justify-center items-center bg-[#FB5607] w-full h-14 rounded-xl">პროგრესში</div>
         </div>
         <div>
-            <div class="bg-[#FF006E] w-full h-14 rounded-xl"></div>
+            <div class="flex justify-center items-center bg-[#FF006E] w-full h-14 rounded-xl">მზად ტესტირებისთვის</div>
         </div>
         <div>
-            <div class="bg-[#3A86FF] w-full h-14 rounded-xl"></div>
+            <div class="flex justify-center items-center bg-[#3A86FF] w-full h-14 rounded-xl">დასრულებული</div>
         </div>
     </div>
 </div>
