@@ -1,5 +1,8 @@
 <div class="h-24 w-full flex justify-between px-28 pt-6">
-    <div class="font-[FiraGO] font-semibold text-[#8338EC] text-2xl flex gap-1">
+    <div
+        class="font-[FiraGO] font-semibold text-[#8338EC] text-2xl flex gap-1 cursor-pointer"
+        routerLink="tasks"
+    >
         <span class="pt-1 font-[Fredoka]">
             Momentum
         </span>
@@ -22,6 +25,7 @@
             label="შექმენი ახალი დავალება"
             icon="pi pi-plus"
             styleClass="!bg-[#8338EC] !w-[268px] !h-[40px] !border-0 !text-white font-semibold font-FiraGO hover:!bg-[#6D2EC5FF] active:!bg-[#591EABFF]"
+            routerLink="/tasks/add"
         />
     </div>
 </div>

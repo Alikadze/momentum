@@ -1,0 +1,9 @@
+:host ::ng-deep p-dropdown:hover span {
+    color: #8338EC !important;
+    padding-right: 0 !important;
+}
+:host ::ng-deep p-dropdown span {
+    padding-right: 0 !important;
+    color: black !important;
+}
+
