@@ -63,6 +63,12 @@ export class AddTaskComponent {
 
     addTask() {
         if (this.addTaskForm.invalid) {
+            this._messageService.add({
+                severity: 'error',
+                summary: 'შეცდომა',
+                detail: 'გთხოვთ შეავსოთ ყველა ველი',
+            })
+
             return;
         }
 
