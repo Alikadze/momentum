@@ -14,14 +14,22 @@
 
 :host ::ng-deep .p-select-list-container {
     max-height: none !important;
-    width: 620px !important;
+    width: 630px !important;
     overflow: hidden !important;
 }
 
 :host ::ng-deep .p-multiselect-list-container {
     max-height: none !important;
-    width: 620px !important;
+    width: 630px !important;
     overflow: hidden !important;
+}
+
+:host ::ng-deep .priority-select p-overlay > div {
+    margin-left: -222px !important;
+}
+
+:host ::ng-deep .employee-select p-overlay > div {
+    margin-left: -444px !important;
 }
 
 

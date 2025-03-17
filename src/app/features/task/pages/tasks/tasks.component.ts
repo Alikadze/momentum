@@ -11,7 +11,6 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-tasks',
     imports: [
         DropdownModule,
-        Select,
         DepartmentNamePipe,
         DatePipe,
         SlicePipe,
@@ -28,9 +27,11 @@ export class TasksComponent {
 
     departments = this._taskService.getDepartments();
     priorities = this._taskService.getPriorities();
-    statuses = this._taskService.getStatuses();
+    employees = this._taskService.getEmployees();
 
     selectedDepartments: any[] = [];
+    selectedPriorities: any[] = [];
+    selectedEmployee: any[] = [];
 
 
     toDoTasks = computed(() =>
