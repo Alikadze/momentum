@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, httpResource } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { Department, Employee, Priority, Status, Task, TaskPayload } from '../types/task';
+import { Department, Priority, Status, Task, TaskPayload } from '../types/task';
+import { Employee } from '../../../core/types/employee';
 
 @Injectable({
   providedIn: 'root'
@@ -54,10 +55,7 @@ export class TaskService {
     }
 
     getEmployees() {
-        return httpResource<Employee[]>({
-            method: 'GET',
-            url: this.apiURL + 'employees'
-        })
+        return this._http.get<Employee[]>(this.apiURL + 'employees')
     }
 
     getStatuses() {

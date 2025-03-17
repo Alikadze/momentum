@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { InputText } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { Select } from 'primeng/select';
@@ -7,11 +7,13 @@ import { Button } from 'primeng/button';
 import { Textarea } from 'primeng/textarea';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TaskService } from '../../services/task.service';
-import { Employee, TaskPayload } from '../../types/task';
-import { catchError, tap, throwError } from 'rxjs';
+import { TaskPayload } from '../../types/task';
+import { catchError, Subscription, tap, throwError } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { minWordValidator } from '../../validators/four-word.validator';
+import { Employee } from '../../../../core/types/employee';
+import { AddEmployeeDialogService } from '../../../../core/services/add-employee-dialog.service';
 
 @Component({
   selector: 'app-add-task',
@@ -28,21 +30,61 @@ import { minWordValidator } from '../../validators/four-word.validator';
   templateUrl: './add-task.component.html',
   styleUrl: './add-task.component.scss'
 })
-export class AddTaskComponent {
+export class AddTaskComponent implements OnInit {
     _taskService = inject(TaskService);
     _messageService = inject(MessageService);
     _router = inject(Router);
+    _addEmployeeDialogService = inject(AddEmployeeDialogService);
+
+    openEmployeeDialog() {
+        this._addEmployeeDialogService.triggerOpenDialog();
+    }
+
+    private subscription = new Subscription();
+
+    ngOnInit() {
+        // Load employees when component initializes
+        this.loadEmployees();
+
+        // Subscribe to employee added events
+        this.subscription.add(
+            this._addEmployeeDialogService.employeeAdded$.subscribe(() => {
+                // Refresh employees list
+                this.loadEmployees();
+            })
+        );
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
 
     priorities = this._taskService.getPriorities();
     departments = this._taskService.getDepartments();
-    employees = this._taskService.getEmployees();
+    employees = signal<Employee[]>([]);
     statuses = this._taskService.getStatuses();
 
     departmentEmployees = computed(() => {
-        return this.employees.value()?.filter((employee: Employee) =>
+        return this.employees()?.filter((employee: Employee) =>
             employee.department.id === this.department_id()
-        );
+        ) || [];
     });
+
+    loadEmployees() {
+        this._taskService.getEmployees().subscribe({
+            next: (employees) => {
+                this.employees.set(employees); // Update the signal with new employees
+            },
+            error: (err) => {
+                console.error('Error loading employees:', err);
+                this._messageService.add({
+                    severity: 'error',
+                    summary: 'შეცდომა',
+                    detail: 'თანამშრომლების ჩატვირთვა ვერ მოხერხდა',
+                });
+            }
+        });
+    }
 
     today = signal(new Date());
     isDepartmentSelected = signal(false);

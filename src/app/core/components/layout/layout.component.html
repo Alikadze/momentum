@@ -9,25 +9,166 @@
 <p-dialog
     [(visible)]="dialogVisible"
     modal
-    ngSkipHydration
+    dismissableMask
 >
     <ng-template #headless>
-        <div class="relative w-[920px] h-[770px] bg-white text-black rounded-xl font-[firaGO]">
+        <div class="relative w-[920px] h-auto pb-10 bg-white text-black rounded-xl font-[firaGO]">
             <div class="absolute top-10 right-12">
                 <p-button
                     icon="pi pi-times"
-                    styleClass="!bg-transparent !border-0 !text-[#8338EC] !hover:!bg-[#F5F5F5] !active:!bg-[#E5E5E5]"
+                    styleClass="!bg-[#DEE2E6] !rounded-full !border-0 !text-white !hover:!bg-[#F5F5F5] !active:!bg-[#E5E5E5]"
+                    (onClick)="closeDialog()"
                 />
             </div>
 
 
-            <div class="flex flex-col justify-between pt-[100px] px-10">
+            <form [formGroup]="addEmployeeForm" class="flex flex-col gap-16 justify-between pt-[100px] px-10">
                 <div class="text-center text-3xl font-bold">თანამშრომლის დამატება</div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
+                <div>
+                    <div class="flex justify-between w-full">
+                        <div class="flex flex-col gap-1">
+                            <label for="header">
+                                სახელი*
+                            </label>
+                            <input
+                                id="header"
+                                pInputText
+                                formControlName="name"
+                                class="!bg-white !text-black !w-[385px] !border-[#DEE2E6]"
+                            >
+                            <div class="font-[firaGO] text-[#6C757D] text-sm">
+                                <div [class.text-green-500]="
+                                    !addEmployeeForm.get('name')?.errors?.['minlength'] &&
+                                    !addEmployeeForm.get('name')?.errors?.['required'] &&
+                                    addEmployeeForm.get('name')?.dirty
+                                ">
+                                    <i class="pi pi-check"></i>
+                                    მინიმუმ 2 სიმბოლო
+                                </div>
+                                <div [class.text-green-500]="
+                                    !addEmployeeForm.get('name')?.errors?.['maxlength'] &&
+                                    !addEmployeeForm.get('name')?.errors?.['required'] &&
+                                    addEmployeeForm.get('name')?.dirty
+                                ">
+                                    <i class="pi pi-check"></i>
+                                    მაქსიმუმ 255 სიმბოლო
+                                </div>
+
+                                <div [class.text-green-500]="
+                                     !addEmployeeForm.get('name')?.errors?.['pattern'] &&
+                                     !addEmployeeForm.get('name')?.errors?.['required'] &&
+                                     addEmployeeForm.get('name')?.dirty
+                                ">
+                                    <i class="pi pi-check"></i>
+                                    შეიცავს მხოლოდ ასოებს
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-1">
+                            <label for="header">
+                                გვარი*
+                            </label>
+                            <input
+                                pInputText
+                                formControlName="surname"
+                                class="!bg-white !text-black !w-[385px] !border-[#DEE2E6]"
+                            >
+                            <div class="font-[firaGO] text-[#6C757D] text-sm">
+                                <div [class.text-green-500]="
+                                    !addEmployeeForm.get('surname')?.errors?.['minlength'] &&
+                                    !addEmployeeForm.get('surname')?.errors?.['required'] &&
+                                    addEmployeeForm.get('surname')?.dirty
+                                ">
+                                    <i class="pi pi-check"></i>
+                                    მინიმუმ 2 სიმბოლო
+                                </div>
+                                <div [class.text-green-500]="
+                                    !addEmployeeForm.get('surname')?.errors?.['maxlength'] &&
+                                    !addEmployeeForm.get('surname')?.errors?.['required'] &&
+                                    addEmployeeForm.get('surname')?.dirty
+                                ">
+                                    <i class="pi pi-check"></i>
+                                    მაქსიმუმ 255 სიმბოლო
+                                </div>
+
+                                <div [class.text-green-500]="
+                                     !addEmployeeForm.get('surname')?.errors?.['pattern'] &&
+                                     !addEmployeeForm.get('surname')?.errors?.['required'] &&
+                                     addEmployeeForm.get('surname')?.dirty
+                                ">
+                                    <i class="pi pi-check"></i>
+                                    შეიცავს მხოლოდ ასოებს
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label>ავატარი*</label>
+                    <div class="flex justify-center items-center w-full h-[145px] border-2 border-dashed border-[#CED4DA] rounded-xl mt-1 relative">
+                        @if (!previewImage) {
+                            <div class="w-full h-full flex flex-col justify-center items-center">
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    [size]="614400"
+                                    id="fileUpload"
+                                    class="hidden"
+                                    (change)="onFileSelected($event)"
+                                />
+                                <label for="fileUpload" class="cursor-pointer flex flex-col items-center justify-center">
+                                    <i class="pi pi-upload text-2xl text-gray-400"></i>
+                                    <span class="mt-2 text-gray-500">აირჩიეთ ფოტო</span>
+                                </label>
+                            </div>
+                        } @else {
+                            <div class="relative w-full h-full flex justify-center items-center">
+                                <div class="relative w-24 h-24">
+                                    <img [src]="previewImage" class="w-24 h-24 rounded-full object-cover" alt="Employee Avatar" />
+                                    <button
+                                        type="button"
+                                        class="absolute -bottom-2 -right-2 bg-white rounded-full p-1 border border-gray-200 hover:bg-gray-100"
+                                        (click)="deleteImage()"
+                                    >
+                                        <i class="size-6 pt-1 pi pi-trash text-gray-500"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex flex-col gap-1">
+                        <label>
+                            დეპარტამენტი*
+                        </label>
+                        <p-select
+                            [options]="departments.value()"
+                            optionLabel="name"
+                            optionValue="id"
+                            formControlName="department_id"
+                            styleClass="!w-[385px] !bg-white !text-black !border-[#DEE2E6]"
+                        />
+                    </div>
+                </div>
+                <div>
+                    <div class="flex gap-5 justify-end">
+                        <p-button
+                            label="გაუქმება"
+                            styleClass=" !bg-transparent !border-[#8338EC] !text-[#8338EC] !w-[100px] !h-[40px] font-semibold font-FiraGO hover:!border-[#8338EC] active:!border-[#8338EC]"
+                            (onClick)="closeDialog()"
+                        />
+                        <p-button
+                            label="დაამატე თანამშრომელი"
+                            styleClass="!bg-[#8338EC] !w-[268px] !h-[40px] !border-0 !text-white font-semibold font-FiraGO hover:!bg-[#6D2EC5FF] active:!bg-[#591EABFF]"
+                            (onClick)="addEmployee()"
+                        />
+                    </div>
+                </div>
+            </form>
         </div>
     </ng-template>
 </p-dialog>
