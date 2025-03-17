@@ -1,0 +1,88 @@
+
+//:host ::ng-deep p-select > span {
+//    color: black !important;
+//    font-family: FiraGO;
+//}
+
+:host ::ng-deep p-select p-overlay > div {
+    border-radius: 8px !important;
+    border: none !important;
+}
+
+:host ::ng-deep .employee-select p-overlay > div > div > div {
+    background-color: white;
+    border: none !important;
+}
+//
+//:host ::ng-deep .employee-select p-overlay  div div div div {
+//    background-color: white;
+//    border: none !important;
+//}
+
+:host ::ng-deep .p-select-empty-message {
+    color: black !important;
+    font-family: FiraGO;
+    margin-left: auto;
+    margin-right: auto;
+}
+:host ::ng-deep .p-select-empty-message:hover {
+    background-color: unset !important;
+}
+
+
+:host ::ng-deep .p-select-option:not(.p-select-option-selected):not(.p-disabled).p-focus {
+    background-color: lightgray !important;
+}
+
+:host ::ng-deep p-select p-overlay div ul {
+    background-color: white !important;
+    border: none !important;
+}
+
+:host ::ng-deep p-select p-overlay div ul li:hover {
+    background-color: #bfc0c4 !important;
+}
+
+.file-upload-area {
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.02);
+    }
+}
+
+.avatar-preview {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.delete-button {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    background-color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #DEE2E6;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+        background-color: #f8f9fa;
+    }
+}

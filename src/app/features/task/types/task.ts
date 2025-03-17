@@ -1,3 +1,5 @@
+import { Employee } from '../../../core/types/employee';
+
 export interface Task {
     id: number;
     name: string;
@@ -33,12 +35,4 @@ export interface Priority {
 export interface Department {
     id: number;
     name: string;
-}
-
-export interface Employee {
-    id: number;
-    name: string;
-    surname: string;
-    avatar: string;
-    department: Department;
 }

@@ -65,7 +65,7 @@
 }
 
 :host ::ng-deep .p-multiselect-option:not(.p-select-option-selected):not(.p-disabled).p-focus {
-    background-color: lightgray !important;
+    background-color: white !important;
 }
 
 :host ::ng-deep p-multiselect p-overlay div ul {
