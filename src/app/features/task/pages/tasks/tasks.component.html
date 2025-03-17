@@ -1,39 +1,332 @@
-<div class="flex flex-col gap-14">
+<div class="flex flex-col gap-14 !font-[firaGO] pb-10">
     <div class="font-[firaGO] font-bold text-2xl text-[#212529]">
         დავალებების გვერდი
     </div>
 
-
     <div>
-        <div class="flex gap-10  border border-[#DEE2E6] w-fit rounded-xl">
-            <p-select
-                styleClass="!bg-transparent !border-0 !shadow-none hover:!text-blue-500"
+        <div class="flex gap-10 border border-[#DEE2E6] w-fit rounded-xl pl-1">
+            <p-multiSelect
+                #departmentsDropdown
+                [(ngModel)]="selectedDepartments"
+                [showToggleAll]="false"
+                [selectionLimit]="0"
+                [options]="departments.value()"
+                optionValue="id"
+                [showHeader]="false"
                 placeholder="დეპარტამენტი"
-            />
+                styleClass="!bg-white !border-[0] max-w-[182px] text-[#212529] !shadow-none pr-3"
+                multiple
+            >
 
-            <p-select
-                styleClass="!bg-transparent !border-0 !shadow-none"
+                <ng-template let-option pTemplate="selectedItems" class="!bg-transparent">
+                    <div class="text-[#a1a1aa] pr-2" > დეპარტამენტი </div>
+                </ng-template>
+
+                <ng-template let-option pTemplate="item" class="!bg-transparent">
+                    <div class="flex items-center gap-2">
+                        <div class="text-[#212529] font-medium text-xs"> {{ option.name }} </div>
+                    </div>
+                </ng-template>
+
+                <ng-template #emptyMessage>
+                    <div class="flex justify-center items-center p-4">
+                        <span class="text-[#212529]">დეპარტამენტი არ მოიძებნა</span>
+                    </div>
+                </ng-template>
+
+                <ng-template #footer>
+                    <div class="flex justify-end items-center p-4 bg-white">
+                        <button
+                            class="bg-[#8338EC] text-white rounded-3xl px-12 py-1 hover:bg-[#6F28C1] transition-colors"
+                            (click)="departmentsDropdown.hide()"
+                        >
+                            არჩევა
+                        </button>
+                    </div>
+                </ng-template>
+            </p-multiSelect>
+
+            <p-multiSelect
+                #prioritiesDropdown
+                [(ngModel)]="selectedPriorities"
+                [showToggleAll]="false"
+                [selectionLimit]="0"
+                [options]="priorities.value()"
+                optionValue="id"
+                [showHeader]="false"
                 placeholder="პრიორიტეტი"
-            />
+                class="priority-select"
+                styleClass="!bg-white !border-[0] max-w-[182px] text-[#212529] !shadow-none pr-5"
+                multiple
+            >
 
-            <p-select
-                styleClass="!bg-transparent !border-0 !shadow-none"
+                <ng-template let-option pTemplate="selectedItems" class="!bg-transparent">
+                    <div class="text-[#a1a1aa] pr-2" > პრიორიტეტი </div>
+                </ng-template>
+
+                <ng-template let-option pTemplate="item" class="!bg-transparent">
+                    <div class="flex items-center gap-2">
+                        <img class="size-5" [src]="option.icon" alt="priority icon"/>
+                        <div class="text-[#212529] font-medium text-xs"> {{ option.name }} </div>
+                    </div>
+                </ng-template>
+
+                <ng-template #emptyMessage>
+                    <div class="flex justify-center items-center p-4">
+                        <span class="text-[#212529]">პრიორიტეტი არ მოიძებნა</span>
+                    </div>
+                </ng-template>
+
+                <ng-template #footer>
+                    <div class="flex justify-end items-center p-4 bg-white">
+                        <button
+                            class="bg-[#8338EC] text-white rounded-3xl px-12 py-1 hover:bg-[#6F28C1] transition-colors"
+                            (click)="prioritiesDropdown.hide()"
+                        >
+                            არჩევა
+                        </button>
+                    </div>
+                </ng-template>
+            </p-multiSelect>
+
+            <p-multiSelect
+                #employeeDropdown
+                [(ngModel)]="selectedEmployee"
+                [showToggleAll]="false"
+                [selectionLimit]="1"
+                [options]="employees.value()"
+                optionValue="id"
+                [showHeader]="false"
                 placeholder="თანამშრომელი"
-            />
+                class="employee-select mr-1"
+                styleClass="!bg-white !border-[0] max-w-[182px] text-[#212529] !shadow-none"
+            >
+                <ng-template let-option pTemplate="selectedItems" class="!bg-transparent">
+                    <div class="text-[#a1a1aa] pr-2" > თანამშრომელი </div>
+                </ng-template>
+
+                <ng-template let-option pTemplate="item" class="!bg-transparent">
+                    <div class="flex items-center gap-2 mt-1">
+                        <img class="size-7 rounded-full" [src]="option.avatar" alt="priority icon"/>
+                        <div class="text-[#212529] font-medium text-xs"> {{ option.name }} </div>
+                    </div>
+                </ng-template>
+
+                <ng-template #emptyMessage>
+                    <div class="flex justify-center items-center p-4">
+                        <span class="text-[#212529]">თანამშრომელი არ მოიძებნა</span>
+                    </div>
+                </ng-template>
+
+                <ng-template #footer>
+                    <div class="flex justify-end items-center p-4 bg-white">
+                        <button
+                            class="bg-[#8338EC] text-white rounded-3xl px-12 py-1 hover:bg-[#6F28C1] transition-colors"
+                            (click)="employeeDropdown.hide()"
+                        >
+                            არჩევა
+                        </button>
+                    </div>
+                </ng-template>
+            </p-multiSelect>
         </div>
     </div>
     <div class="grid grid-cols-4 gap-4 font-[firaGO] font-medium text-white text-xl">
-        <div>
+        <div class="min-w-[300px]">
             <div class="flex justify-center items-center bg-[#F7BC30] w-full h-14 rounded-xl">დასაწყები</div>
+            <div class="flex flex-col gap-8 mt-8">
+                @for (toDoTask of toDoTasks(); track toDoTask.id) {
+                    <div class="border border-[#F7BC30] w-full h-[225px] rounded-xl flex flex-col justify-between gap-2 py-5 px-2">
+                        <div class="flex justify-between items-center px-2">
+                            <div class="flex items-center gap-2">
+                                <div
+                                    class="border border-[#F7BC30] flex items-center gap-1 px-2 py-1 rounded-md h-fit w-fit"
+                                >
+                                    <img class="size-5" [src]="toDoTask.priority.icon" alt="priority icon"/>
+                                    <div class="text-[#F7BC30] font-medium text-xs"> {{ toDoTask.priority.name  }} </div>
+                                </div>
+                                <div
+                                    class="bg-[#FF66A8] rounded-2xl px-2 py-1 text-xs font-medium h-fit"
+                                >
+                                    {{ toDoTask.department.name | departmentName }}
+                                </div>
+                            </div>
+                            <div class="text-black text-[12px] w-fit font-normal">
+                                {{ toDoTask.due_date | date: 'dd MMM, yyyy' }}
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="text-[#212529] text-[15px] font-bold px-2 mt-5">
+                                {{ toDoTask.name }}
+                            </div>
+                            <div class="text-[#212529] text-sm font-normal px-2 mt-2">
+                                {{ toDoTask.description.length > 100 ? (toDoTask.description | slice: 0:100) + '...' : toDoTask.description }}
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center px-2">
+                                <div class="flex items-center gap-2">
+                                    <img class="size-7 rounded-full" [src]="toDoTask.employee.avatar" alt="employee icon"/>
+                                </div>
+
+                                <div class="text-[#212529] flex gap-1 items-center text-base">
+                                    <i class="pi pi-comment"></i>
+                                    {{ toDoTask.total_comments }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
         <div>
             <div class="flex justify-center items-center bg-[#FB5607] w-full h-14 rounded-xl">პროგრესში</div>
+            <div class="flex flex-col gap-8 mt-8">
+                @for (inProgress of inProgressTasks(); track inProgress.id) {
+                    <div class="border border-[#FB5607] w-full h-[225px] rounded-xl flex flex-col justify-between gap-2 py-5 px-2">
+                        <div class="flex justify-between items-center px-2">
+                            <div class="flex items-center gap-2">
+                                <div
+                                    class="border border-[#F7BC30] flex items-center gap-1 px-2 py-1 rounded-md h-fit w-fit"
+                                >
+                                    <img class="size-5" [src]="inProgress.priority.icon" alt="priority icon"/>
+                                    <div class="text-[#F7BC30] font-medium text-xs"> {{ inProgress.priority.name  }} </div>
+                                </div>
+                                <div
+                                    class="bg-[#FF66A8] rounded-2xl px-2 py-1 text-xs font-medium h-fit"
+                                >
+                                    {{ inProgress.department.name | departmentName }}
+                                </div>
+                            </div>
+                            <div class="text-black text-[12px] w-fit font-normal">
+                                {{ inProgress.due_date | date: 'dd MMM, yyyy' }}
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="text-[#212529] text-[15px] font-bold px-2 mt-5">
+                                {{ inProgress.name }}
+                            </div>
+                            <div class="text-[#212529] text-sm font-normal px-2 mt-2 ">
+                                {{ inProgress.description.length > 100 ? (inProgress.description | slice: 0:100) + '...' : inProgress.description }}
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center px-2">
+                                <div class="flex items-center gap-2">
+                                    <img class="size-7 rounded-full" [src]="inProgress.employee.avatar" alt="employee icon"/>
+                                </div>
+
+                                <div class="text-[#212529] flex gap-1 items-center text-base">
+                                    <i class="pi pi-comment"></i>
+                                    {{ inProgress.total_comments }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
         <div>
             <div class="flex justify-center items-center bg-[#FF006E] w-full h-14 rounded-xl">მზად ტესტირებისთვის</div>
+            <div class="flex flex-col gap-8 mt-8">
+                @for (testingTask of testingTasks(); track testingTask.id) {
+                    <div class="border border-[#FF006E] w-full h-[225px] rounded-xl flex flex-col justify-between gap-2 py-5 px-2">
+                        <div class="flex justify-between items-center px-2">
+                            <div class="flex items-center gap-2">
+                                <div
+                                    class="border border-[#F7BC30] flex items-center gap-1 px-2 py-1 rounded-md h-fit w-fit"
+                                >
+                                    <img class="size-5" [src]="testingTask.priority.icon" alt="priority icon"/>
+                                    <div class="text-[#F7BC30] font-medium text-xs"> {{ testingTask.priority.name  }} </div>
+                                </div>
+                                <div
+                                    class="bg-[#FF66A8] rounded-2xl px-2 py-1 text-xs font-medium h-fit"
+                                >
+                                    {{ testingTask.department.name | departmentName }}
+                                </div>
+                            </div>
+                            <div class="text-black text-[12px] w-fit font-normal">
+                                {{ testingTask.due_date | date: 'dd MMM, yyyy' }}
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="text-[#212529] text-[15px] font-bold px-2">
+                                {{ testingTask.name }}
+                            </div>
+                            <div class="text-[#212529] text-sm font-normal px-2 mt-2">
+                                {{ testingTask.description.length > 100 ? (testingTask.description | slice: 0:100) + '...' : testingTask.description }}
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center px-2">
+                                <div class="flex items-center gap-2">
+                                    <img class="size-7 rounded-full" [src]="testingTask.employee.avatar" alt="employee icon"/>
+                                </div>
+
+                                <div class="text-[#212529] flex gap-1 items-center text-base">
+                                    <i class="pi pi-comment"></i>
+                                    {{ testingTask.total_comments }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
         <div>
             <div class="flex justify-center items-center bg-[#3A86FF] w-full h-14 rounded-xl">დასრულებული</div>
+            <div class="flex flex-col gap-8 mt-8">
+                @for (doneTask of doneTasks(); track doneTask.id) {
+                    <div class="border border-[#3A86FF] w-full h-[225px] rounded-xl flex flex-col justify-between gap-2 py-5 px-2">
+                        <div class="flex justify-between items-center px-2">
+                            <div class="flex items-center gap-2">
+                                <div
+                                    class="border border-[#F7BC30] flex items-center gap-1 px-2 py-1 rounded-md h-fit w-fit"
+                                >
+                                    <img class="size-5" [src]="doneTask.priority.icon" alt="priority icon"/>
+                                    <div class="text-[#F7BC30] font-medium text-xs"> {{ doneTask.priority.name  }} </div>
+                                </div>
+                                <div
+                                    class="bg-[#F7BC30] rounded-2xl px-2 py-1 text-xs font-medium h-fit"
+                                >
+                                    {{ doneTask.department.name | departmentName }}
+                                </div>
+                            </div>
+                            <div class="text-black text-[12px] w-fit font-normal">
+                                {{ doneTask.due_date | date: 'dd MMM, yyyy' }}
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="text-[#212529] text-[15px] font-bold px-2">
+                                {{ doneTask.name }}
+                            </div>
+                            <div class="text-[#212529] text-sm font-normal px-2 mt-2">
+                                {{ doneTask.description.length > 100 ? (doneTask.description | slice: 0:100) + '...' : doneTask.description }}
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center px-2">
+                                <div class="flex items-center gap-2">
+                                    <img class="size-7 rounded-full" [src]="doneTask.employee.avatar" alt="employee icon"/>
+                                </div>
+
+                                <div class="text-[#212529] flex gap-1 items-center text-base">
+                                    <i class="pi pi-comment"></i>
+                                    {{ doneTask.total_comments }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </div>

@@ -1,3 +1,8 @@
+:host ::ng-deep .p-checkbox-box {
+    background-color: unset !important;
+    border: 1px solid #8338EC !important;
+}
+
 :host ::ng-deep p-dropdown:hover span {
     color: #8338EC !important;
     padding-right: 0 !important;
@@ -7,3 +12,63 @@
     color: black !important;
 }
 
+:host ::ng-deep .p-select-list-container {
+    max-height: none !important;
+    width: 630px !important;
+    overflow: hidden !important;
+}
+
+:host ::ng-deep .p-multiselect-list-container {
+    max-height: none !important;
+    width: 630px !important;
+    overflow: hidden !important;
+}
+
+:host ::ng-deep .priority-select p-overlay > div {
+    margin-left: -222px !important;
+}
+
+:host ::ng-deep .employee-select p-overlay > div {
+    margin-left: -444px !important;
+}
+
+
+:host ::ng-deep p-select p-overlay > div {
+    border-radius: 8px !important;
+    border: 1px solid #8338EC !important;
+    overflow: hidden !important;
+}
+
+:host ::ng-deep p-multiselect p-overlay > div {
+    border-radius: 8px !important;
+    border: 1px solid #8338EC !important;
+    overflow: hidden !important;
+}
+
+:host ::ng-deep p-select p-overlay > div div {
+    border: none !important;
+    overflow: hidden !important;
+}
+
+:host ::ng-deep p-multiselect p-overlay > div div {
+    border: none !important;
+    overflow: hidden !important;
+}
+
+:host ::ng-deep .p-select-option:not(.p-select-option-selected):not(.p-disabled).p-focus {
+    background-color: lightgray !important;
+}
+
+:host ::ng-deep p-select p-overlay div ul {
+    background-color: white !important;
+    border: none !important;
+}
+
+:host ::ng-deep .p-multiselect-option:not(.p-select-option-selected):not(.p-disabled).p-focus {
+    background-color: lightgray !important;
+}
+
+:host ::ng-deep p-multiselect p-overlay div ul {
+    background-color: white !important;
+    border: none !important;
+}

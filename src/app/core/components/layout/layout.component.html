@@ -1,7 +1,33 @@
 <div class="abs top-0 w-full z-50 h-auto">
-    <app-header/>
+    <app-header (openDialogEvent)="openDialog()" />
 </div>
 
 <div class="mx-24">
     <router-outlet/>
 </div>
+
+<p-dialog
+    [(visible)]="dialogVisible"
+    modal
+    ngSkipHydration
+>
+    <ng-template #headless>
+        <div class="relative w-[920px] h-[770px] bg-white text-black rounded-xl font-[firaGO]">
+            <div class="absolute top-10 right-12">
+                <p-button
+                    icon="pi pi-times"
+                    styleClass="!bg-transparent !border-0 !text-[#8338EC] !hover:!bg-[#F5F5F5] !active:!bg-[#E5E5E5]"
+                />
+            </div>
+
+
+            <div class="flex flex-col justify-between pt-[100px] px-10">
+                <div class="text-center text-3xl font-bold">თანამშრომლის დამატება</div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </ng-template>
+</p-dialog>
