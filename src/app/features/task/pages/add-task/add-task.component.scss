@@ -60,3 +60,8 @@ label {
 :host ::ng-deep p-select p-overlay div ul li:hover {
     background-color: #bfc0c4 !important;
 }
+
+:host ::ng-deep .p-select-list-container {
+    max-height: none !important;
+    overflow: hidden !important;
+}

@@ -1,8 +1,9 @@
 
-//:host ::ng-deep p-select > span {
-//    color: black !important;
-//    font-family: FiraGO;
-//}
+:host ::ng-deep .select-department span {
+    color: black !important;
+    font-family: FiraGO;
+    overflow: hidden !important;
+}
 
 :host ::ng-deep p-select p-overlay > div {
     border-radius: 8px !important;
@@ -13,11 +14,20 @@
     background-color: white;
     border: none !important;
 }
-//
-//:host ::ng-deep .employee-select p-overlay  div div div div {
-//    background-color: white;
-//    border: none !important;
-//}
+
+:host ::ng-deep .employee-select p-overlay div {
+    border: none !important;
+}
+
+:host ::ng-deep .p-select-overlay {
+    border: none !important;
+    overflow: hidden !important;
+}
+
+:host ::ng-deep .employee-select p-overlay  div div div div {
+    background-color: white;
+    border: none !important;
+}
 
 :host ::ng-deep .p-select-empty-message {
     color: black !important;
