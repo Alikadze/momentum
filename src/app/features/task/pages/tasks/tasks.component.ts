@@ -9,6 +9,7 @@ import { Employee } from '../../../../core/types/employee';
 import { AddEmployeeDialogService } from '../../../../core/services/add-employee-dialog.service';
 import { TaskCardComponent } from '../../components/task-card/task-card.component';
 import { RouterLink } from '@angular/router';
+import { Tag } from 'primeng/tag';
 
 @Component({
   selector: 'app-tasks',
@@ -19,6 +20,7 @@ import { RouterLink } from '@angular/router';
         Select,
         TaskCardComponent,
         RouterLink,
+        Tag,
     ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss'
@@ -36,15 +38,6 @@ export class TasksComponent implements OnInit {
     @ViewChild('employeeDropdown') employeeDropdown: any;
 
     subscription = new Subscription();
-
-    onEmployeeChange(event: any) {
-        // Prevent automatic closing by reopening after a small delay
-        setTimeout(() => {
-            if (this.employeeDropdown) {
-                this.employeeDropdown.show();
-            }
-        });
-    }
 
     ngOnInit() {
         this.loadEmployees();
@@ -67,34 +60,66 @@ export class TasksComponent implements OnInit {
         });
     }
 
-    selectedDepartments: any[] = [];
-    selectedPriorities: any[] = [];
-    selectedEmployee: any[] = [];
+    selectedDepartments = signal<number[]>([]);
+    selectedPriorities = signal<number[]>([]);
+    selectedEmployee = signal<number | null>(null);
+
+    tempSelectedDepartments = signal<number[]>([]);
+    tempSelectedPriorities = signal<number[]>([]);
+    tempSelectedEmployee = signal<number | null>(null);
+
+    applyFilters() {
+        this.selectedDepartments.set(this.tempSelectedDepartments());
+        this.selectedPriorities.set(this.tempSelectedPriorities());
+        this.selectedEmployee.set(this.tempSelectedEmployee());
+    }
+
+    toDoTasks = computed(() => {
+        return this.tasks.value()?.filter(task => {
+            if (task.status.id !== 1) return false;
+
+            return (
+                (this.selectedDepartments().length === 0 || this.selectedDepartments().includes(task.department.id)) &&
+                (this.selectedPriorities().length === 0 || this.selectedPriorities().includes(task.priority.id)) &&
+                (this.selectedEmployee() === null || this.selectedEmployee() === task.employee.id) // Single select fix
+            );
+        });
+    });
+
+    inProgressTasks = computed(() => {
+        return this.tasks.value()?.filter(task => {
+            if (task.status.id !== 2) return false;
+
+            return (
+                (this.selectedDepartments().length === 0 || this.selectedDepartments().includes(task.department.id)) &&
+                (this.selectedPriorities().length === 0 || this.selectedPriorities().includes(task.priority.id)) &&
+                (this.selectedEmployee() === null || this.selectedEmployee() === task.employee.id) // Single select fix
+            );
+        });
+    });
 
 
-    toDoTasks = computed(() =>
-        this.tasks.value()?.filter(
-            task => task.status.id === 1
-        )
-    );
+    testingTasks = computed(() => {
+        return this.tasks.value()?.filter(task => {
+            if (task.status.id !== 3) return false;
 
-    inProgressTasks = computed(() =>
-        this.tasks.value()?.filter(
-            task => task.status.id === 2
-        )
-    );
+            return (
+                (this.selectedDepartments().length === 0 || this.selectedDepartments().includes(task.department.id)) &&
+                (this.selectedPriorities().length === 0 || this.selectedPriorities().includes(task.priority.id)) &&
+                (this.selectedEmployee() === null || this.selectedEmployee() === task.employee.id) // Single select fix
+            );
+        });
+    });
 
-    testingTasks = computed(() =>
-        this.tasks.value()?.filter(
-            task => task.status.id === 3
-        )
-    );
+    doneTasks = computed(() => {
+        return this.tasks.value()?.filter(task => {
+            if (task.status.id !== 4) return false;
 
-    doneTasks = computed(() =>
-        this.tasks.value()?.filter(
-            task => task.status.id === 4
-        )
-    );
-
-
+            return (
+                (this.selectedDepartments().length === 0 || this.selectedDepartments().includes(task.department.id)) &&
+                (this.selectedPriorities().length === 0 || this.selectedPriorities().includes(task.priority.id)) &&
+                (this.selectedEmployee() === null || this.selectedEmployee() === task.employee.id) // Single select fix
+            );
+        });
+    });
 }

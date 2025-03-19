@@ -7,7 +7,7 @@
         <div class="flex gap-10 border border-[#DEE2E6] w-fit rounded-xl pl-1">
             <p-multiSelect
                 #departmentsDropdown
-                [(ngModel)]="selectedDepartments"
+                [(ngModel)]="tempSelectedDepartments"
                 [showToggleAll]="false"
                 [selectionLimit]="0"
                 [options]="departments.value()"
@@ -38,7 +38,7 @@
                     <div class="flex justify-end items-center p-4 bg-white">
                         <button
                             class="bg-[#8338EC] text-white rounded-3xl px-12 py-1 hover:bg-[#6F28C1] transition-colors"
-                            (click)="departmentsDropdown.hide()"
+                            (click)="departmentsDropdown.hide(); applyFilters()"
                         >
                             არჩევა
                         </button>
@@ -48,7 +48,7 @@
 
             <p-multiSelect
                 #prioritiesDropdown
-                [(ngModel)]="selectedPriorities"
+                [(ngModel)]="tempSelectedPriorities"
                 [showToggleAll]="false"
                 [selectionLimit]="0"
                 [options]="priorities.value()"
@@ -81,7 +81,7 @@
                     <div class="flex justify-end items-center p-4 bg-white">
                         <button
                             class="bg-[#8338EC] text-white rounded-3xl px-12 py-1 hover:bg-[#6F28C1] transition-colors"
-                            (click)="prioritiesDropdown.hide()"
+                            (click)="prioritiesDropdown.hide(); applyFilters()"
                         >
                             არჩევა
                         </button>
@@ -118,6 +118,7 @@
             </p-select>
         </div>
     </div>
+
     <div class="grid grid-cols-4 gap-4 font-[firaGO] font-medium text-white text-xl">
         <div class="min-w-[300px]">
             <div class="flex justify-center items-center bg-[#F7BC30] w-full h-14 rounded-xl">დასაწყები</div>
@@ -129,6 +130,18 @@
                         routerLink="/tasks/{{toDoTask.id}}"
                         class="cursor-pointer"
                     />
+                } @empty {
+                    @if (selectedDepartments().length > 0 || selectedPriorities().length > 0 || selectedEmployee()) {
+                        <div>
+                            <div class="flex justify-center items-center bg-white w-full h-12 rounded-xl mt-2">
+                                <p-tag
+                                    severity="warn"
+                                    value="დასაწყები დავალებები არ მოიძებნა"
+                                    class="!w-full"
+                                />
+                            </div>
+                        </div>
+                    }
                 }
             </div>
         </div>
@@ -142,6 +155,18 @@
                         routerLink="/tasks/{{inProgress.id}}"
                         class="cursor-pointer"
                     />
+                } @empty {
+                    @if (selectedDepartments().length > 0 || selectedPriorities().length > 0 || selectedEmployee()) {
+                        <div>
+                            <div class="flex justify-center items-center bg-white w-full h-12 rounded-xl mt-2">
+                                <p-tag
+                                    severity="warn"
+                                    value="პროგრესში დავალებები არ მოიძებნა"
+                                    class="!w-full"
+                                />
+                            </div>
+                        </div>
+                    }
                 }
             </div>
         </div>
@@ -155,6 +180,18 @@
                         routerLink="/tasks/{{testingTask.id}}"
                         class="cursor-pointer"
                     />
+                } @empty {
+                    @if (selectedDepartments().length > 0 || selectedPriorities().length > 0 || selectedEmployee()) {
+                        <div>
+                            <div class="flex justify-center items-center bg-white w-full h-12 rounded-xl mt-2">
+                                <p-tag
+                                    severity="warn"
+                                    value="მზად ტესტირებისთვის დავალებები არ მოიძებნა"
+                                    class="!w-full"
+                                />
+                            </div>
+                        </div>
+                    }
                 }
             </div>
         </div>
@@ -168,6 +205,18 @@
                         routerLink="/tasks/{{doneTask.id}}"
                         class="cursor-pointer"
                     />
+                } @empty {
+                    @if (selectedDepartments().length > 0 || selectedPriorities().length > 0 || selectedEmployee()) {
+                        <div>
+                            <div class="flex justify-center items-center bg-white w-full h-12 rounded-xl mt-2">
+                                <p-tag
+                                    severity="warn"
+                                    value="დასრულებული დავალებები არ მოიძებნა"
+                                    class="!w-full"
+                                />
+                            </div>
+                        </div>
+                    }
                 }
             </div>
         </div>

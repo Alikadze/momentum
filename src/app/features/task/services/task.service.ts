@@ -15,10 +15,10 @@ export class TaskService {
         return httpResource<Task[]>({
             method: 'GET',
             url: this.apiURL + 'tasks'
-        })
+        }, {defaultValue: []})
     }
 
-    getTask(id: string) {
+    getTask(id: number) {
         return this._http.get<Task>(
             `${this.apiURL}tasks/${id}`
         )
@@ -29,14 +29,6 @@ export class TaskService {
             `${this.apiURL}tasks`,
             task
         )
-    }
-
-    updateTask(id: number, status_id: string) {
-        return httpResource<Task>({
-            method: 'PUT',
-            url: this.apiURL + 'tasks/' + id,
-            body: status_id
-        })
     }
 
     getDepartments() {
@@ -64,8 +56,8 @@ export class TaskService {
         })
     }
 
-    getComments(task_id: string) {
-        return this._http.get<Comment>(
+    getComments(task_id: number) {
+        return this._http.get<Comment[]>(
             `${this.apiURL}tasks/${task_id}/comments`
         )
     }
@@ -77,7 +69,7 @@ export class TaskService {
         )
     }
 
-    changeTaskStatus(id: string, status_id: string) {
+    changeTaskStatus(id: number, status_id: string) {
         return this._http.put<Task>(
             `${this.apiURL}tasks/${id}`,
             { status_id }  // Send as a proper JSON object

@@ -9,7 +9,6 @@ export interface Task {
     priority: Priority;
     department: Department;
     employee: Employee;
-    total_comments: number;
 }
 
 export interface TaskPayload {
@@ -49,6 +48,6 @@ export interface Comment {
 
 export interface CommentPayload {
     text: string;
-    task_id: string;
-    parent_id?: string | null;
+    task_id: number;
+    parent_id?: number | null;
 }

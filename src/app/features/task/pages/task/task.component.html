@@ -1,5 +1,5 @@
 @if (task$ | async;as task) {
-    <div class="flex justify-between gap-60 font-[firaGO]">
+    <div class="flex justify-between gap-60 h-auto !font-[firaGO] pb-12">
         <div class="flex flex-col gap-20">
             <div class="flex flex-col gap-7">
                 <div>
@@ -17,7 +17,7 @@
                         {{task.name}}
                     </div>
                 </div>
-                <div class="text-[#212529] text-lg font-normal">
+                <div class="text-[#212529] text-lg font-normal w-[700px] break-words">
                     {{ task.description }}
                 </div>
             </div>
@@ -27,7 +27,7 @@
                 <div class="flex flex-col gap-6 mt-5">
                     <div class="flex gap-40 items-center">
                         <div class="flex gap-1 font-normal text-base text-[#474747]">
-                            <img class="size-5" src="/icons/png/pie-chart@2x.svg">
+                            <img class="size-5" src="/icons/svg/pie-chart@2x.svg">
                             <span>სტატუსი</span>
                         </div>
                         <div>
@@ -68,6 +68,51 @@
             </div>
         </div>
 
-        <div class="w-[750px] h-[800px] bg-gray-400">1</div>
+        <div class="flex flex-col gap-32 w-[750px] mt-16 bg-[#F8F3FEA6] border border-[#DDD2FF] px-11 py-12 rounded-xl">
+            <div class="h-[135px]">
+                <div class="bg-white border border-[#ADB5BD] rounded-xl overflow-hidden">
+                    <textarea
+                        pTextarea
+                        [(ngModel)]="newComment"
+                        placeholder="დაწერე კომენტარი"
+                        class="w-full h-[105px] resize-none !rounded-xl !pb-12 !bg-white !border-none !shadow-none !text-black text-sm"
+                    ></textarea>
+
+                    <div>
+                        <div class="flex justify-end pr-4 pb-3">
+                            <p-button
+                                label="დააკომენტარე"
+                                styleClass="!bg-[#8338EC] !text-white !rounded-3xl !px-5 !py-1.5 !hover:bg-[#6F28C1] !transition-colors !border-0"
+                                (onClick)="addComment()"
+                                [loading]="isAddComLoading"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                @if (comments$ | async;as comments) {
+                    <div>
+                        <span class="font-medium text-xl">
+                            კომენტარები
+                        </span>
+                            <span class="rounded-full bg-[#8338EC] px-3 py-1 text-white">
+                            {{ comments.length }}
+                        </span>
+                    </div>
+                    <div class="mt-10 flex flex-col-reverse gap-5">
+                        @for (comment of comments;track comment.id) {
+                            <app-comment-card
+                                [comment]="comment"
+                                [parentCommentId]="comment.id"
+                                [taskId]="task.id"
+                                (subComAdded)="loadComments()"
+                            />
+                        }
+                    </div>
+                }
+            </div>
+        </div>
     </div>
 }
