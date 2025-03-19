@@ -1,1 +1,118 @@
-<p>task works!</p>
+@if (task$ | async;as task) {
+    <div class="flex justify-between gap-60 h-auto !font-[firaGO] pb-12">
+        <div class="flex flex-col gap-20">
+            <div class="flex flex-col gap-7">
+                <div>
+                    <div class="flex items-center gap-5">
+                        <div class="border border-[#F7BC30] flex items-center gap-1 px-2 py-1.5 rounded-md h-fit w-fit">
+                            <img class="size-5" [src]="task.priority.icon" alt="priority icon"/>
+                            <div class="text-[#F7BC30] font-medium text-xs"> {{ task.priority.name  }} </div>
+                        </div>
+                        <div class="bg-[#FF66A8] rounded-2xl px-2 py-1 text-base font-medium h-fit text-white">
+                            {{ task.department.name }}
+                        </div>
+                    </div>
+
+                    <div class="mt-4 font-semibold text-3xl text-[#212529]">
+                        {{task.name}}
+                    </div>
+                </div>
+                <div class="text-[#212529] text-lg font-normal w-[700px] break-words">
+                    {{ task.description }}
+                </div>
+            </div>
+
+            <div class="pr-2 w-[500px] font-medium text-[#2A2A2A]">
+                <div class="font-medium text-2xl">დავალების დეტალები</div>
+                <div class="flex flex-col gap-6 mt-5">
+                    <div class="flex gap-40 items-center">
+                        <div class="flex gap-1 font-normal text-base text-[#474747]">
+                            <img class="size-5" src="/icons/svg/pie-chart@2x.svg">
+                            <span>სტატუსი</span>
+                        </div>
+                        <div>
+                            <p-select
+                                [options]="statuses.value()"
+                                optionLabel="name"
+                                [ngModel]="task.status.id || selectedStatus"
+                                (onChange)="onStatusChange($event)"
+                                optionValue="id"
+                                styleClass="!w-[260px] !bg-white !text-black !border-[#DEE2E6]"
+                                class="select-department"
+                            />
+                        </div>
+                    </div>
+                    <div class="flex gap-20">
+                        <div class="font-normal text-base text-[#474747]">
+                            <i class="pi pi-user"></i>
+                            თანამშრომელი
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <img class="size-8 rounded-full" [src]="task.employee.avatar" alt="employee icon"/>
+                            <div>
+                                <div class="font-light text-[11px] text-[#474747]" >{{ task.employee.department.name }}</div>
+                                <div class="text-[#212529] font-medium text-xs"> {{ task.employee.name }} </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-[75px]">
+                        <div class="font-normal text-base text-[#474747]">
+                            <i class="pi pi-calendar"></i>
+                            დავალების ვადა
+                        </div>
+                        <div>
+                            {{ task.due_date | date: 'dd/MM/yyyy' }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-32 w-[750px] mt-16 bg-[#F8F3FEA6] border border-[#DDD2FF] px-11 py-12 rounded-xl">
+            <div class="h-[135px]">
+                <div class="bg-white border border-[#ADB5BD] rounded-xl overflow-hidden">
+                    <textarea
+                        pTextarea
+                        [(ngModel)]="newComment"
+                        placeholder="დაწერე კომენტარი"
+                        class="w-full h-[105px] resize-none !rounded-xl !pb-12 !bg-white !border-none !shadow-none !text-black text-sm"
+                    ></textarea>
+
+                    <div>
+                        <div class="flex justify-end pr-4 pb-3">
+                            <p-button
+                                label="დააკომენტარე"
+                                styleClass="!bg-[#8338EC] !text-white !rounded-3xl !px-5 !py-1.5 !hover:bg-[#6F28C1] !transition-colors !border-0"
+                                (onClick)="addComment()"
+                                [loading]="isAddComLoading"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                @if (comments$ | async;as comments) {
+                    <div>
+                        <span class="font-medium text-xl">
+                            კომენტარები
+                        </span>
+                            <span class="rounded-full bg-[#8338EC] px-3 py-1 text-white">
+                            {{ comments.length }}
+                        </span>
+                    </div>
+                    <div class="mt-10 flex flex-col-reverse gap-5">
+                        @for (comment of comments;track comment.id) {
+                            <app-comment-card
+                                [comment]="comment"
+                                [parentCommentId]="comment.id"
+                                [taskId]="task.id"
+                                (subComAdded)="loadComments()"
+                            />
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

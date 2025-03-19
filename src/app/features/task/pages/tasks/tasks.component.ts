@@ -2,28 +2,31 @@ import { Component, computed, inject, OnChanges, OnInit, signal, SimpleChanges, 
 import { DropdownModule } from 'primeng/dropdown';
 import { TaskService } from '../../services/task.service';
 import { Select } from 'primeng/select';
-import { DepartmentNamePipe } from '../../pipes/department-name.pipe';
-import { DatePipe, SlicePipe } from '@angular/common';
 import { MultiSelect } from 'primeng/multiselect';
 import { FormsModule } from '@angular/forms';
-import { tap } from 'rxjs';
+import { Subscription, tap } from 'rxjs';
 import { Employee } from '../../../../core/types/employee';
+import { AddEmployeeDialogService } from '../../../../core/services/add-employee-dialog.service';
+import { TaskCardComponent } from '../../components/task-card/task-card.component';
+import { RouterLink } from '@angular/router';
+import { Tag } from 'primeng/tag';
 
 @Component({
   selector: 'app-tasks',
     imports: [
         DropdownModule,
-        DepartmentNamePipe,
-        DatePipe,
-        SlicePipe,
         MultiSelect,
         FormsModule,
         Select,
+        TaskCardComponent,
+        RouterLink,
+        Tag,
     ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss'
 })
 export class TasksComponent implements OnInit {
+    _addEmployeeDialogService = inject(AddEmployeeDialogService);
     _taskService = inject(TaskService);
 
     tasks = this._taskService.getTasks();
@@ -34,17 +37,17 @@ export class TasksComponent implements OnInit {
 
     @ViewChild('employeeDropdown') employeeDropdown: any;
 
-    onEmployeeChange(event: any) {
-        // Prevent automatic closing by reopening after a small delay
-        setTimeout(() => {
-            if (this.employeeDropdown) {
-                this.employeeDropdown.show();
-            }
-        });
-    }
+    subscription = new Subscription();
 
     ngOnInit() {
         this.loadEmployees();
+
+        this.subscription.add(
+            this._addEmployeeDialogService.employeeAdded$.subscribe(() => {
+                // Refresh employees list
+                this.loadEmployees();
+            })
+        );
     }
 
     loadEmployees() {
@@ -57,34 +60,66 @@ export class TasksComponent implements OnInit {
         });
     }
 
-    selectedDepartments: any[] = [];
-    selectedPriorities: any[] = [];
-    selectedEmployee: any[] = [];
+    selectedDepartments = signal<number[]>([]);
+    selectedPriorities = signal<number[]>([]);
+    selectedEmployee = signal<number | null>(null);
+
+    tempSelectedDepartments = signal<number[]>([]);
+    tempSelectedPriorities = signal<number[]>([]);
+    tempSelectedEmployee = signal<number | null>(null);
+
+    applyFilters() {
+        this.selectedDepartments.set(this.tempSelectedDepartments());
+        this.selectedPriorities.set(this.tempSelectedPriorities());
+        this.selectedEmployee.set(this.tempSelectedEmployee());
+    }
+
+    toDoTasks = computed(() => {
+        return this.tasks.value()?.filter(task => {
+            if (task.status.id !== 1) return false;
+
+            return (
+                (this.selectedDepartments().length === 0 || this.selectedDepartments().includes(task.department.id)) &&
+                (this.selectedPriorities().length === 0 || this.selectedPriorities().includes(task.priority.id)) &&
+                (this.selectedEmployee() === null || this.selectedEmployee() === task.employee.id) // Single select fix
+            );
+        });
+    });
+
+    inProgressTasks = computed(() => {
+        return this.tasks.value()?.filter(task => {
+            if (task.status.id !== 2) return false;
+
+            return (
+                (this.selectedDepartments().length === 0 || this.selectedDepartments().includes(task.department.id)) &&
+                (this.selectedPriorities().length === 0 || this.selectedPriorities().includes(task.priority.id)) &&
+                (this.selectedEmployee() === null || this.selectedEmployee() === task.employee.id) // Single select fix
+            );
+        });
+    });
 
 
-    toDoTasks = computed(() =>
-        this.tasks.value()?.filter(
-            task => task.status.id === 1
-        )
-    );
+    testingTasks = computed(() => {
+        return this.tasks.value()?.filter(task => {
+            if (task.status.id !== 3) return false;
 
-    inProgressTasks = computed(() =>
-        this.tasks.value()?.filter(
-            task => task.status.id === 2
-        )
-    );
+            return (
+                (this.selectedDepartments().length === 0 || this.selectedDepartments().includes(task.department.id)) &&
+                (this.selectedPriorities().length === 0 || this.selectedPriorities().includes(task.priority.id)) &&
+                (this.selectedEmployee() === null || this.selectedEmployee() === task.employee.id) // Single select fix
+            );
+        });
+    });
 
-    testingTasks = computed(() =>
-        this.tasks.value()?.filter(
-            task => task.status.id === 3
-        )
-    );
+    doneTasks = computed(() => {
+        return this.tasks.value()?.filter(task => {
+            if (task.status.id !== 4) return false;
 
-    doneTasks = computed(() =>
-        this.tasks.value()?.filter(
-            task => task.status.id === 4
-        )
-    );
-
-
+            return (
+                (this.selectedDepartments().length === 0 || this.selectedDepartments().includes(task.department.id)) &&
+                (this.selectedPriorities().length === 0 || this.selectedPriorities().includes(task.priority.id)) &&
+                (this.selectedEmployee() === null || this.selectedEmployee() === task.employee.id) // Single select fix
+            );
+        });
+    });
 }

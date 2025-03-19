@@ -1,0 +1,45 @@
+<div
+    class="border w-full h-[225px] rounded-xl flex flex-col justify-between gap-2 py-5 px-2"
+    [style.border-color]="interfaceColor()"
+>
+    <div class="flex justify-between items-center px-2">
+        <div class="flex items-center gap-2">
+            <div
+                class="border border-[#F7BC30] flex items-center gap-1 px-2 py-1 rounded-md h-fit w-fit"
+            >
+                <img class="size-5" [src]="task()?.priority?.icon" alt="priority icon"/>
+                <div class="text-[#F7BC30] font-medium text-xs"> {{ task()?.priority?.name  }} </div>
+            </div>
+            <div
+                class="bg-[#FF66A8] rounded-2xl px-2 py-1 text-xs font-medium h-fit"
+            >
+                {{ task()!.department.name | departmentName }}
+            </div>
+        </div>
+        <div class="text-black text-[12px] w-fit font-normal">
+            {{ task()?.due_date | date: 'dd MMM, yyyy' }}
+        </div>
+    </div>
+
+    <div>
+        <div class="text-[#212529] text-[15px] font-bold px-2 mt-5">
+            {{ task()?.name }}
+        </div>
+        <div class="text-[#212529] text-sm font-normal px-2 mt-2">
+            {{ task()?.description!.length > 100 ? (task()?.description | slice: 0:100) + '...' : task()?.description }}
+        </div>
+    </div>
+
+    <div>
+        <div class="flex justify-between items-center px-2">
+            <div class="flex items-center gap-2">
+                <img class="size-7 rounded-full" [src]="task()?.employee?.avatar" alt="employee icon"/>
+            </div>
+
+            <div class="text-[#212529] flex gap-1 items-center text-base">
+                <i class="pi pi-comment"></i>
+                {{ '0' }}
+            </div>
+        </div>
+    </div>
+</div>

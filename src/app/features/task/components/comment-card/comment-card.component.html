@@ -1,0 +1,69 @@
+<div class="!font-[firaGO]">
+    <div class="flex gap-3">
+        <div class="min-w-10">
+            <img class="rounded-full size-10" [src]="comment().author_avatar">
+        </div>
+        <div class="flex flex-col gap-2">
+            <div class="flex flex-col">
+                <div class="font-medium text-[#212529] text-lg">
+                    {{ comment().author_nickname }}
+                </div>
+                <div class="text-base font-light text-[#343A40] break-words max-w-[600px]">
+                    {{ comment().text }}
+                </div>
+                <div>
+                    <p-button
+                        styleClass="!bg-transparent !text-[#8338EC] !border-0 !text-sm !font-base"
+                        outlined
+                        (onClick)="toggleSubCom()"
+                    >
+                        <img src="icons/svg/Left 2.svg">
+                        უპასუხე
+                    </p-button>
+
+                    @if (isSubComTextareaVisible) {
+                        <div class="h-[155px] w-[550px] z-50">
+                            <div class="bg-white border border-[#ADB5BD] rounded-xl overflow-hidden">
+                                <textarea
+                                    pTextarea
+                                    [(ngModel)]="newSubComment"
+                                    placeholder="დაწერე კომენტარი"
+                                    class="w-full h-[105px] resize-none !rounded-xl !pb-12 !bg-white !border-none !shadow-none !text-black text-sm"
+                                ></textarea>
+
+                                <div>
+                                    <div class="flex justify-end pr-4 pb-3">
+                                        <p-button
+                                            label="დააკომენტარე"
+                                            styleClass="!bg-[#8338EC] !text-white !rounded-3xl !px-5 !py-1.5 !hover:bg-[#6F28C1] !transition-colors !border-0"
+                                            (onClick)="addSubComment()"
+                                            [loading]="isAddComLoading"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="flex flex-col-reverse gap-3">
+                @for (subComment of comment().sub_comments;track subComment.id) {
+                    <div class="flex gap-3 w-[620px] mt-2">
+                        <div class="min-w-8">
+                            <img class="rounded-full size-8" [src]="subComment.author_avatar">
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <div class="font-medium text-[#212529] text-lg">
+                                {{ subComment.author_nickname }}
+                            </div>
+                            <div class="text-base font-light text-[#343A40] text-clip break-words max-w-[550px]">
+                                {{ subComment.text }}
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
